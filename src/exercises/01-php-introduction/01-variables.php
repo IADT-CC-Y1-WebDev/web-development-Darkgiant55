@@ -29,10 +29,10 @@
         // TODO: Write your solution here
         $firstName = "David";
         $lastName = "Eze";
-        $age = "23"
-        $city = "Blanchardstown"
+        $age = "23";
+        $city = "Blanchardstown";
         
-        echo "My name is $firstName $lastName";
+        echo "My name is $firstName $lastName I am $age years old and live in $city ";
         ?>
     </div>
 
@@ -50,6 +50,20 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+
+        $applePrice = "5";
+        $pearPrice = "7";
+        $melonPrice = "9";
+        $appleNum = "3";
+        $pearNum = "4";
+        $melonNum = "6";
+        $appleSubtotal = ($applePrice * $appleNum);
+        $pearSubtotal = ($pearPrice * $pearNum);
+        $melonSubtotal = ($melonPrice * $pearNum);
+        $totalCost = ($appleSubtotal + $pearSubtotal + $melonSubtotal);
+        $discountPrice = ($totalCost * 0.9);
+
+        echo  "$discountPrice"
         ?>
     </div>
 
@@ -65,6 +79,16 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        $isStudent = true; 
+        $hasDiscount = true; 
+        $isPremiumMember = true; 
+    
+        echo "Are you a Student?" .($isStudent ? "Yes" : "No") . "<br>";
+        echo "Do you have a Discount?" .($hasDiscount ? "Yes" : "No") . "<br>";
+        echo "Are you a premium member?" .($isPremiumMember ? "Yes" : "No"). "<br>" ;
+
+
+
         ?>
     </div>
 
