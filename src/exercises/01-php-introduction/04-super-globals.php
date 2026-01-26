@@ -27,6 +27,14 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        
+            echo "<h2>Server Information</h2>";
+
+            echo "<p><h4>PHP Self:</h4>" . $_SERVER['PHP_SELF'] . "</p>";
+            echo "<p><h4>Request Method:</h4>" . $_SERVER['REQUEST_METHOD'] . "</p>";
+            echo "<p><h4>HTTP Host:</h4>" . $_SERVER['HTTP_HOST'] . "</p>";
+            echo "<p><h4>User Agent:</h4>" . $_SERVER['HTTP_USER_AGENT'] . "</p>";
+
         ?>
     </div>
 
@@ -43,6 +51,12 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        
+
+  
+            $name = $_GET['name'] ?? 'Guest';
+            echo "Hello, $name!";
+
         ?>
     </div>
 
@@ -60,6 +74,8 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        $name = $_GET['product']['quantity'] ;
+            echo "you ordered $quantity $product";
         ?>
     </div>
 

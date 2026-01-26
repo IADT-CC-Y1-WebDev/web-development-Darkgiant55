@@ -27,6 +27,12 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+                    $film = ['How to train your dragon', 'Shrek', 'Sharktale', 'Cars', 'Up'];
+            echo "<ul>";
+            for ($i = 0; $i < count($film); $i++) {
+                echo "<li>Movie $i: $film[$i]</li>";
+            }
+            echo "</ul>";
         ?>
     </div>
 
@@ -42,6 +48,20 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+                    $student = [
+                "name" => "David",
+                "studentid" => "N0025547",
+                "course" => "Creative Computing",
+                "grade" => "A+",
+            ];
+
+            $text = 
+                " My name is {$student['name']} and my student id is {$student['studentid']}" .
+                " my course is  {$student['course']} and i got a {$student['grade']}.";
+
+            
+
+            print("<p>$text</p>");
         ?>
     </div>
 
@@ -58,6 +78,18 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        $capitals = [
+                "Spain's" => "Madrid",
+                "Ireland's" => "Dublin",
+                "Germany's" => "Berlin",
+                "UK's" => "England",
+            ];
+
+            echo "<ul>";
+            foreach ($capitals as $country => $title) {
+                echo "<li>$country capital is $title</li>";
+            }
+            echo "</ul>";
         ?>
     </div>
 
@@ -75,6 +107,31 @@
     <div class="output">
         <?php
         // TODO: Write your solution here
+        $menu = [
+    'starter' => [
+        'breadsticks' => "€1.00",
+        'wings' => "€4.00",
+        'nachos' => "€3.00",
+        'salad' => "€2.00"
+    ],
+    'main course' => [
+        'Steak' => "€13.00",
+        'Burger' => "€15.00",
+        'Pasta' => "€14.00",
+        'Salmon' =>"€11.00",
+    ],
+    
+];
+
+foreach ($menu as $section => $items) {
+    echo "<p>" . ucfirst($section) . " menu:</p>";
+    echo "<ul>";
+    foreach ($items as $key => $value) {
+        echo "<li>$key\t($value)</li>";
+    }
+    echo "</ul>";
+}
+
         ?>
     </div>
 
