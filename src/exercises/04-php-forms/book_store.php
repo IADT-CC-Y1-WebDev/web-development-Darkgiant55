@@ -24,13 +24,17 @@ $errors = [];
 // Start the session
 startSession();
 
+//dd($_FILES, true);//
+
+
+
 try {
     // =========================================================================
     // STEP 1: View Posted Data
     // See: /examples/04-php-forms/step-01-form-submission/
     // =========================================================================
     // TODO: First, just dump the posted data to see what's submitted
-    dd($_POST);
+    //dd($_POST);//
 
 
     // =========================================================================
@@ -62,6 +66,7 @@ try {
         'isbn' => $_POST['isbn'] ?? null,
         'format_ids' => $_POST['format_ids'] ?? [],
         'description' => $_POST['description'] ?? null,
+        'cover' => $_FILES['cover'] ?? null,
     ];
     dd($data);
 
@@ -78,11 +83,12 @@ try {
     $rules = [
         'title' => "required|nomepty|min:5|max:255 ",
         'author' => "required|nonempty|min:5|max:255",
-        'publisher' => "required|nonempty|integer",
+        'publisher_id' => "required|nonempty|integer",
         'year' => "required|nonempty|integer|minvalue:1900|maxvalue:" . $year,
         'isbn' => "required|nonempty|min:13|max:13",
         'format_ids' => "required|nonempty|array|min:1|max:4",
         'description' => "required|nonempty|min:10",
+        'cover'=>'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880',
 
     ];
     $validator = new Validator ($data, $rules);
@@ -94,6 +100,9 @@ try {
         throw new Exception('Validation failed.');
 
     }
+
+        $uploader = new ImageUpload();
+        $imageFilename = $uploader->process($_FILES['cover']);
 
     echo "Validation successful";
 
@@ -136,7 +145,7 @@ try {
     // =========================================================================
     // TODO: In the catch block, store validation errors in the session
     // TODO: Redirect back to the form
-    setFormErrors($data);
+    setFormErrors($errors);
 
 
     // =========================================================================
