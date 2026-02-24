@@ -7,8 +7,8 @@ require_once 'php/lib/utils.php';
 startSession();
 
 try {
-    $publishers = Publishers::findAll();
-    $formats = Platform::findAll();
+    // $publishers = Publishers::findAll();
+    // $formats = Formats::findAll();
 }
 catch (PDOException $e) {
     setFlashMessage('error', 'Error: ' . $e->getMessage());
@@ -39,10 +39,10 @@ catch (PDOException $e) {
                         </div>
                     </div>
                     <div class="input">
-                        <label class="special" for="release_date">Release Year:</label>
+                        <label class="special" for="year">Release Year:</label>
                         <div>
-                            <input type="date" id="release_date" name="release_date" value="<?= old('release_date') ?>" required>
-                            <p><?= error('release_date') ?></p>
+                            <input type="number" id="year" name="year" min="1900" max="2099" step="1" value="<?= old('year') ?>" required>
+                            <p><?= error('year') ?></p>
                         </div>
                     </div>
                     <div class="input">
@@ -67,7 +67,7 @@ catch (PDOException $e) {
                     </div>
                     <div class="input">
                         <label class="special">Formats:</label>
-                        <div>
+                        <!-- <div>
                             <?php foreach ($formats as $platform) { ?>
                                 <div>
                                     <input type="checkbox" 
@@ -79,7 +79,7 @@ catch (PDOException $e) {
                                     <label for="platform_<?= h($platform->id) ?>"><?= h($platform->name) ?></label>
                                 </div>
                             <?php } ?>
-                        </div>
+                        </div> -->
                         <p><?= error('formats_ids') ?></p>
                     </div>
                     <div class="input">
@@ -91,7 +91,7 @@ catch (PDOException $e) {
                     </div>
                     <div class="input">
                         <button  class="button" type="submit">Store Book</button>
-                        <div class="button"><a href="index.php">Cancel</a></div>
+                        <div class="button"><a href="book_list.php">Cancel</a></div>
                     </div>
                 </form>
             </div>

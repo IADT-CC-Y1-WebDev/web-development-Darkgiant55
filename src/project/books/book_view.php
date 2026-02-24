@@ -13,13 +13,13 @@ try {
         die("<p>Error: Book not found.</p>");
     }
 
-    $publisher = Publisher::findById($book->publisher_id);
-    $publishers = Publisher::findByBook($book->id);
+   // $publisher = Publisher::findById($book->publisher_id);
+   // $publishers = Publisher::findByBook($book->id);
 
-    $publisherNames = [];
-    foreach ($publishers as $publisher) {
-        $publisherNames[] = htmlspecialchars($publisher->name);
-    }
+   // $publisherNames = [];
+  //  foreach ($publishers as $publisher) {
+     //   $publisherNames[] = htmlspecialchars($publisher->name);
+   // }
 } 
 catch (PDOException $e) {
     setFlashMessage('error', 'Error: ' . $e->getMessage());
@@ -42,7 +42,7 @@ catch (PDOException $e) {
             <div class="width-12">
                 <div class="hCard">
                     <div class="bottom-content">
-                        <img src="images/<?= htmlspecialchars($book->image_filename) ?>" />
+                        <img src="images/<?= htmlspecialchars($book->cover_filename) ?>" />
 
                         <div class="actions">
                             <a href="book_edit.php?id=<?= h($book->id) ?>">Edit</a> /
@@ -53,10 +53,11 @@ catch (PDOException $e) {
 
                     <div class="bottom-content">
                         <h2><?= htmlspecialchars($book->title) ?></h2>
-                        <p>Release Year: <?= htmlspecialchars($book->release_date) ?></p>
-                        <p>Publisher: <?= htmlspecialchars($publisher->name) ?></p>
+                        <p>Author: <?= htmlspecialchars($book->author) ?></p>
+                        <p>Year: <?= htmlspecialchars($book->year) ?></p>
+
                         <p>Description:<br /><?= nl2br(htmlspecialchars($book->description)) ?></p>
-                        <p>Publishers: <?= implode(', ', $publisherNames) ?></p>
+                    
                     </div>
                 </div>
             </div>

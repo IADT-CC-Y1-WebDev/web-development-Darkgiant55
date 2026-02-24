@@ -21,7 +21,7 @@ try {
     $data = [
         'id' => $_POST['id'] ?? null,
         'title' => $_POST['title'] ?? null,
-        'release_date' => $_POST['release_date'] ?? null,
+        'year' => $_POST['year'] ?? null,
         'publisher_id' => $_POST['publisher_id'] ?? null,
         'description' => $_POST['description'] ?? null,
         'format_ids' => $_POST['format_ids'] ?? [],
@@ -32,7 +32,7 @@ try {
     $rules = [
         'id' => 'required|integer',
         'title' => 'required|notempty|min:1|max:255',
-        'release_date' => 'required|notempty',
+        'year' => 'required|notempty',
         'publisher_id' => 'required|integer',
         'description' => 'required|notempty|min:10|max:5000',
         'format_ids' => 'required|array|min:1|max:10',
@@ -75,7 +75,7 @@ try {
     $uploader = new ImageUpload();
     if ($uploader->hasFile('image')) {
         // Delete old image
-        $uploader->deleteImage($book->image_filename);
+        $uploader->deleteImage($book->cover_filename);
         // Process new image
         $imageFilename = $uploader->process($_FILES['image']);
         // Check for processing errors
@@ -86,11 +86,11 @@ try {
     
     // Update the book instance
     $book->title = $data['title'];
-    $book->release_date = $data['release_date'];
+    $book->year = $data['year'];
     $book->publisher_id = $data['publisher_id'];
     $book->description = $data['description'];
     if ($imageFilename) {
-        $book->image_filename = $imageFilename;
+        $book->cover_filename = $imageFilename;
     }
 
     // Save to database

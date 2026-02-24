@@ -20,15 +20,17 @@ try {
         throw new Exception("Book not found.");
     }
 
-    $bookFormats = Format::findByBook($book->id);
-    $bookFormatsIds = [];
-    foreach ($bookFormats as $format) {
-        $bookFormatsIds[] = $format->id;
+     $bookFormats = Format::findByBook($book->id);
+     $bookFormatsIds = [];
+     foreach ($bookFormats as $format) {
+         $bookFormatsIds[] = $format->id;
     }
 
     $publishers = Publisher::findAll();
-    $formats = Format::findAll();
+     $formats = Format::findAll();
+ 
 }
+
 catch (PDOException $e) {
     setFlashMessage('error', 'Error: ' . $e->getMessage());
     redirect('/index.php');
@@ -61,10 +63,10 @@ catch (PDOException $e) {
                         </div>
                     </div>
                     <div class="input">
-                        <label class="special" for="release_date">Release Year:</label>
+                        <label class="special" for="year">Release Year:</label>
                         <div>
-                            <input type="date" id="release_date" name="release_date" value="<?= old('release_date', $book->release_date) ?>" required>
-                            <p><?= error('release_date') ?></p>
+                            <input type="number" id="year" name="year" min="1900" max="2099" step="1" value="<?= old('year', $book->year) ?>" required>
+                            <p><?= error('year') ?></p>
                         </div>
                     </div>
                     <div class="input">
@@ -83,12 +85,12 @@ catch (PDOException $e) {
                     <div class="input">
                         <label class="special" for="description">Description:</label>
                         <div>
-                            <textarea id="description" name="description" required><?= old('description', $book->description) ?></textarea>
+                            <textarea id="description" name="description" required rows="5" cols="30"><?= old('description', $book->description) ?></textarea>
                             <p><?= error('description') ?></p>
                         </div>
                     </div>
                     <div class="input">
-                        <label class="special">Formats:</label>
+                        <!-- <label class="special">Formats:</label>
                         <div>
                             <?php foreach ($formats as $format) { ?>
                                 <div>
@@ -101,10 +103,10 @@ catch (PDOException $e) {
                                     <label for="format_<?= h($format->id) ?>"><?= h($format->name) ?></label>
                                 </div>
                             <?php } ?>
-                        </div>
+                        </div> -->
                         <p><?= error('format_ids') ?></p>
                     </div>
-                    <div><img src="images/<?= $book->image_filename ?>" /></div>
+                    <div><img src="images/<?= $book->cover_filename ?>" /></div>
                     <div class="input">
                         <label class="special" for="image">Image (optional):</label>
                         <div>
@@ -114,7 +116,7 @@ catch (PDOException $e) {
                     </div>
                     <div class="input">
                         <button class="button" type="submit">Update Book</button>
-                        <div class="button"><a href="index.php">Cancel</a></div>
+                        <div class="button"><a href="book_list.php">Cancel</a></div>
                     </div>
                 </form>
             </div>

@@ -68,16 +68,16 @@ class Book {
     }
 
     // Find books by platform (requires JOIN with bookPlatforms table)
-    public static function findByPlatform($platformId) {
+    public static function findByFormat($formatId) {
         $db = DB::getInstance()->getConnection();
         $stmt = $db->prepare("
-            SELECT g.*
-            FROM books g
-            INNER JOIN book_platform gp ON g.id = gp.book_id
-            WHERE gp.platform_id = :platform_id
-            ORDER BY g.title
+            SELECT b.*
+            FROM books b
+            INNER JOIN book_format bf ON b.id = bf.book_id
+            WHERE bf.format_id = :format_id
+            ORDER BY b.title
         ");
-        $stmt->execute(['platform_id' => $platformId]);
+        $stmt->execute(['format_id' => $formatId]);
 
         $books = [];
         while ($row = $stmt->fetch()) {
