@@ -3,6 +3,8 @@ require_once 'php/lib/config.php';
 require_once 'php/lib/session.php';
 require_once 'php/lib/forms.php';
 require_once 'php/lib/utils.php';
+require_once 'php/lib/ImageUpload.php';
+
 
 startSession();
 
@@ -62,7 +64,7 @@ try {
     setFlashMessage('success', 'Book deleted successfully.');
 
     // Redirect to book details page
-    redirect('index.php');
+    redirect('book_list.php');
 }
 catch (Exception $e) {
     // Set error flash message
@@ -72,11 +74,11 @@ catch (Exception $e) {
     setFormData($data);
     setFormErrors($errors);
 
-    // Redirect back to view page if there is an ID; otherwise, go to index page
+    // Redirect back to view page if there is an ID; otherwise, go to book_list page
     if (isset($data['id']) && $data['id']) {
         redirect('book_view.php?id=' . $data['id']);
     }
     else {
-        redirect('index.php');
+        redirect('book_list.php');
     }
 }

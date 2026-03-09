@@ -3,23 +3,24 @@ require_once 'php/lib/config.php';
 require_once 'php/lib/session.php';
 require_once 'php/lib/forms.php';
 require_once 'php/lib/utils.php';
-
+require_once 'php/lib/ImageUpload.php';
+ 
 startSession();
-
+ 
 try {
-    // $publishers = Publishers::findAll();
-    // $formats = Formats::findAll();
+    $publishers = Publisher::findAll();
+    $formats = Format::findAll();
 }
 catch (PDOException $e) {
     setFlashMessage('error', 'Error: ' . $e->getMessage());
-    redirect('/index.php');
+    redirect('/book_list.php');
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <?php include 'php/inc/head_content.php'; ?>
-        <title>View Book</title>
+        <title>Create Book</title>
     </head>
     <body>
         <div class="container">
@@ -30,7 +31,7 @@ catch (PDOException $e) {
                 <h1>Create Book</h1>
             </div>
             <div class="width-12">
-                <form action="book_store.php" method="POST" enctype="multipart/form-data">
+                <form action="book_store.php" method="POST" enctype="multipart/form-data" novalidate>
                     <div class="input">
                         <label class="special" for="title">Title:</label>
                         <div>
@@ -39,25 +40,42 @@ catch (PDOException $e) {
                         </div>
                     </div>
                     <div class="input">
-                        <label class="special" for="year">Release Year:</label>
+                        <label class="special" for="author">Author:</label>
+                        <div>
+                            <input type="text" id="author" name="author" value="<?= old('author') ?>" required>
+                            <p><?= error('author') ?></p>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <label for="publisher_id">Publisher:</label>
+                        <select id="publisher_id" name="publisher_id">
+                            <option value="">-- Select Publisher --</option>
+                            <?php foreach ($publishers as $pub): ?>
+                                <option value="<?= $pub->id ?>">
+                                    <?= chosen('publisher_id', $pub->id) ? 'selected' : '' ?>
+                                    <?= h($pub->name) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p><?= error('publisher_id') ?></p>
+                    </div>
+                    <p class="error"><?= error('id') ?></p>
+                    <div class="input">
+                        <label class="special" for="year">Year:</label>
                         <div>
                             <input type="number" id="year" name="year" min="1900" max="2099" step="1" value="<?= old('year') ?>" required>
                             <p><?= error('year') ?></p>
                         </div>
                     </div>
+                   
                     <div class="input">
-                        <label class="special" for="publisher_id">Publishers:</label>
+                        <label class="special" for="isbn">ISBN:</label>
                         <div>
-                            <select id="publisher_id" name="publisher_id" required>
-                                <?php foreach ($publishers as $publisher) { ?>
-                                    <option value="<?= h($publisher->id) ?>" <?= chosen('publisher_id', $publisher->id) ? "selected" : "" ?>>
-                                        <?= h($publisher->name) ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <p><?= error('publisher_id') ?></p>
+                            <input type="1234567890123" id="isbn" name="isbn" value="<?= old('isbn') ?>" required>
+                            <p><?= error('isbn') ?></p>
                         </div>
                     </div>
+ 
                     <div class="input">
                         <label class="special" for="description">Description:</label>
                         <div>
@@ -65,28 +83,35 @@ catch (PDOException $e) {
                             <p><?= error('description') ?></p>
                         </div>
                     </div>
+ 
                     <div class="input">
-                        <label class="special">Formats:</label>
-                        <!-- <div>
-                            <?php foreach ($formats as $platform) { ?>
-                                <div>
-                                    <input type="checkbox" 
-                                        id="platform_<?= h($platform->id) ?>" 
-                                        name="platform_ids[]" 
-                                        value="<?= h($platform->id) ?>"
-                                        <?= chosen('platform_ids', $platform->id) ? "checked" : "" ?>
-                                        >
-                                    <label for="platform_<?= h($platform->id) ?>"><?= h($platform->name) ?></label>
-                                </div>
-                            <?php } ?>
-                        </div> -->
-                        <p><?= error('formats_ids') ?></p>
+                        <label class="special">Available Formats:</label>
+                        <div class="checkbox-group">
+                            <?php foreach ($formats as $format): ?>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"
+                                    name="format_ids[]"
+                                    value="<?= $format->id ?>"
+                                    <?= chosen('format_id', $format->id) ? "checked" : "" ?>
+                                    >
+                                    <?= h($format->name) ?>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+ 
+                        <!-- TODO: Display error message if formats validation fails     -->
+                        <?php if (error('format_id')): ?>
+                    <p class="error"><?= error('format_id') ?></p>
+                <?php endif; ?>
+ 
                     </div>
+                   
+                   
                     <div class="input">
-                        <label class="special" for="image">Image (required):</label>
+                        <label class="special" for="cover">cover (required):</label>
                         <div>
-                            <input type="file" id="image" name="image" accept="image/*" required>
-                            <p><?= error('image') ?></p>
+                            <input type="file" id="cover" name="cover" accept="image/*" required>
+                            <p><?= error('cover') ?></p>
                         </div>
                     </div>
                     <div class="input">

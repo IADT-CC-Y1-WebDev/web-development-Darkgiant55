@@ -33,7 +33,7 @@ try {
 
 catch (PDOException $e) {
     setFlashMessage('error', 'Error: ' . $e->getMessage());
-    redirect('/index.php');
+    redirect('/book_list.php');
 }
 ?>
 <!DOCTYPE html>
@@ -90,7 +90,7 @@ catch (PDOException $e) {
                         </div>
                     </div>
                     <div class="input">
-                        <!-- <label class="special">Formats:</label>
+                         <label class="special">Formats:</label>
                         <div>
                             <?php foreach ($formats as $format) { ?>
                                 <div>
@@ -103,7 +103,7 @@ catch (PDOException $e) {
                                     <label for="format_<?= h($format->id) ?>"><?= h($format->name) ?></label>
                                 </div>
                             <?php } ?>
-                        </div> -->
+                        </div> 
                         <p><?= error('format_ids') ?></p>
                     </div>
                     <div><img src="images/<?= $book->cover_filename ?>" /></div>

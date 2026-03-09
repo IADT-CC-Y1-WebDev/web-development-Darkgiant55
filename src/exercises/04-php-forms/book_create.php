@@ -195,8 +195,9 @@ $formats = [
                     <label class="checkbox-label">
                         <input type="checkbox" 
                                name="format_ids[]"
-                               value="<?= $format['id'] ?>"> 
+                               value="<?= $format['id'] ?>" 
                                <?= chosen('format_ids' , $format['id']) ? "checked" : "" ?>
+                        >
                         <?= h($format['name']) ?>
                     </label>
                 <?php endforeach; ?>

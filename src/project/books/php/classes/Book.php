@@ -96,6 +96,8 @@ class Book {
                 SET title = :title,
                     author = :author,
                     publisher_id = :publisher_id,
+                    year = :year,
+                    isbn = :isbn,
                     description = :description,
                     cover_filename = :cover_filename
                 WHERE id = :id
@@ -105,6 +107,8 @@ class Book {
                 'title' => $this->title,
                 'author' => $this->author,
                 'publisher_id' => $this->publisher_id,
+                'year' => $this->year,
+                'isbn' => $this->isbn,
                 'description' => $this->description,
                 'cover_filename' => $this->cover_filename,
                 'id' => $this->id
@@ -113,14 +117,16 @@ class Book {
         else {
             // Insert new record
             $stmt = $this->db->prepare("
-                INSERT INTO books (title, author, publisher_id, description, cover_filename)
-                VALUES (:title, :author, :publisher_id, :description, :cover_filename)
+                INSERT INTO books (title, author, publisher_id,year,isbn, description, cover_filename)
+                VALUES (:title, :author, :publisher_id, :year, :isbn, :description, :cover_filename)
             ");
 
             $params = [
                 'title' => $this->title,
                 'author' => $this->author,
                 'publisher_id' => $this->publisher_id,
+                'year' => $this->year,
+                'isbn' => $this->isbn,
                 'description' => $this->description,
                 'cover_filename' => $this->cover_filename
             ];
@@ -167,8 +173,10 @@ class Book {
             'title' => $this->title,
             'author' => $this->author,
             'publisher_id' => $this->publisher_id,
+            'year' => $this->year,
+            'isbn' => $this->isbn,
             'description' => $this->description,
-            'cover_filename' => $this->cover_filename
+            'cover_filename' => $this->cover_filename,
         ];
     }
 }

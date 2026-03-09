@@ -22,18 +22,23 @@ try {
         'id' => $_POST['id'] ?? null,
         'title' => $_POST['title'] ?? null,
         'year' => $_POST['year'] ?? null,
-        'publisher_id' => $_POST['publisher_id'] ?? null,
+        'author'=>$_POST['author']??null,
+        'publisher_id'=>$_POST['publisher_id']??null,
+        'isbn'=>$_POST['isbn']??null,
         'description' => $_POST['description'] ?? null,
         'format_ids' => $_POST['format_ids'] ?? [],
         'image' => $_FILES['image'] ?? null
     ];
 
     // Define validation rules
+    $year = date("Y");
     $rules = [
-        'id' => 'required|integer',
+        'id' => 'required|integer|min:1|max:255',
         'title' => 'required|notempty|min:1|max:255',
-        'year' => 'required|notempty',
-        'publisher_id' => 'required|integer',
+        'auhtor'=> 'required|notempty',
+        'publisher_id'=>'required|nonempty|integer',
+        'year' => 'required|notempty|integer|minvalue:1900|maxvalue:'. $year,
+        'isbn' => 'required|notempty|integer|min:13|max:13',
         'description' => 'required|notempty|min:10|max:5000',
         'format_ids' => 'required|array|min:1|max:10',
         'image' => 'file|image|mimes:jpg,jpeg,png|max_file_size:5242880' // optional -- no required rule
@@ -85,12 +90,15 @@ try {
     }
     
     // Update the book instance
+    $book->id = $data['id'];
     $book->title = $data['title'];
+    $book->author = $data['auhtor'];
     $book->year = $data['year'];
+    $book->isbn = $data['isbn'];
     $book->publisher_id = $data['publisher_id'];
     $book->description = $data['description'];
-    if ($imageFilename) {
-        $book->cover_filename = $imageFilename;
+    if ($cover_filename) {
+        $book->cover_filename = $cover_filename;
     }
 
     // Save to database
@@ -118,8 +126,8 @@ try {
 }
 catch (Exception $e) {
     // Error - clean up uploaded image
-    if ($imageFilename) {
-        $uploader->deleteImage($imageFilename);
+    if ($cover_filename) {
+        $uploader->deleteImage($cover_filename);
     }
 
     // Set error flash message
@@ -129,11 +137,11 @@ catch (Exception $e) {
     setFormData($data);
     setFormErrors($errors);
 
-    // Redirect back to edit page if there is an ID; otherwise, go to index page
+    // Redirect back to edit page if there is an ID; otherwise, go to book_list page
     if (isset($data['id']) && $data['id']) {
         redirect('book_edit.php?id=' . $data['id']);
     }
     else {
-        redirect('index.php');
+        redirect('book_list.php');
     }
 }
