@@ -66,21 +66,58 @@ function isMaxLength(value, max) {
 }
 
 function onSubmitForm(evt) {
-    evt.preventDefaault();
+    evt.preventDefault();
 
     errors = {};
 
-    let titleMin = titleInput.dataset.minLength;
-    let titleMax = titleInput.dataset.minLength;
+    let titleMin = titleInput.dataset.minLength || 3;
+    let titleMax = titleInput.dataset.minLength || 255;
+    let descMin = 10
 
     //title
     if(!isRequired(titleInput.value)){
         addError('title','Title is required!');
     } else if (!isMinLength(titleInput.value,titleMin)){
-            addError('title','Title must be at least 3 characters.' + titleMin + );
+            addError('title','Title must be at least 3 characters.' + titleMin + 'characters');
     } else if (!isMaxLength(titleInput.value, titleMax)){
-        addError('title','Title must be at most 15 characters.' + titleMax +);
+        addError('title','Title must be at most 15 characters.' + titleMax + 'characters');
     }
+
+    //release date
+    if(!isRequired(releaseDateInput.value)){
+        addError('release_date','Released year is required.');
+    }
+
+    // genre_id
+    if (!isRequired(genreIdInput.value)) {
+        addError('genre_id', 'Genre is required.');
+    }
+
+    // description
+    if (!isRequired(descriptionInput.value)) {
+        addError('description', 'Description is required.');
+    }  else if (!isMinLength(descriptionInput.value, descMin)){
+        addError('description', `Description must be at least ${descMin} characters.`)
+    }
+
+    // platform_ids
+    let platformSelected = false;
+    for (let i = 0; i < platformIdsInput.length; i++) {
+        if (platformIdsInput[i].checked) {
+            platformSelected = true;
+            break;
+        }
+    }
+
+     if (!platformSelected) {
+        addError('platform_ids', 'Select at least one platform.');
+    }
+
+     // image
+    if (!imageInput.files || imageInput.files.length === 0) {
+        addError('image', 'Image is required.');
+    }
+
 
     
 
@@ -91,5 +128,7 @@ function onSubmitForm(evt) {
     //gameorm.submit();
     alert('Form data valid.');
    }
+
+   
     
 }
