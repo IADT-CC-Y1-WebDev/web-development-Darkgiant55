@@ -4,128 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>09 – JS Form Validation (Examples)</title>
-    <link rel="stylesheet" href="/examples/css/style.css">
-    <style>
-        form {
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            max-width: 420px;
-        }
-
-        label {
-            font-weight: 600;
-        }
-
-        input {
-            font-size: 1rem;
-            padding: 0.35rem 0.5rem;
-        }
-
-        .error {
-            color: #b00020;
-            font-size: 0.85rem;
-        }
-
-        .input-error {
-            border-color: #b00020;
-            background: #fff5f5;
-        }
-
-        .error-summary {
-            border-radius: 6px;
-            border: 1px solid #b00020;
-            background: #fff5f5;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        /* align button icon with text */
-        .button-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25em;
-            padding: 0.25em 0.5em;
-            border-radius: 0.5em;
-            background-color: #cc00aa;
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .button-primary svg {
-            width: 1em;
-            height: 1em;
-        }
-    </style>
+    <title>09 – JS Form Validation (Exercises)</title>
+    <link rel="stylesheet" href="/exercises/css/style.css">
 </head>
 
 <body>
     <div class="back-link">
         <a href="/index.php">&larr; Back to Module Index</a>
+        <a href="/examples/09-js-form-validation/">View Examples &rarr;</a>
     </div>
 
-    <h1>09 – JavaScript Form Validation (Examples)</h1>
+    <h1>09 – JavaScript Form Validation (Exercises)</h1>
 
-
-
-    <h2>Introduction</h2>
-    <ul>
-        <li>The techniques in the previous slides can be used to validate forms</li>
-        <li>Validating forms on the client, i.e, the Web Browser, is known as <span style="color:#dc2626">Client-Side Form Validation</span></li>
-        <li>The PHP form validation you have previously applied to your forms is known as <span style="color:#dc2626">Server-Side Form Validation</span></li>
-        <li>Client-side form validation is usually combined with Server-Side Form validation which was covered in the earlier in this module</li>
-        <li>Client-side and Server-side validation have different purposes, but the validation techniques are very similar</li>
-    </ul>
-
-    <h2>Client-Side Form Validation</h2>
-
-    <ul>
-        <li>Client-Side Form Validation is not used as a security precaution</li>
-        <li>It is used to give better feedback to our users while they fill in our forms</li>
-        <li>JavaScript code runs in the browser, this means we can give the user feedback as they fill in the form</li>
-        <li>This is a much quicker response than server-side validation</li>
-        <li>It provides a better user experience to our users, for example,  if a user enters an invalid email address and move to the next field, you can show an error message immediately. That way the user can correct every field before they submit the form.</li>
-        <li>With Server-Side validation:</li>
-        <ul>
-            <li>the form would need to be submitted</li>
-            <li>and the form data must be sent to the server</li>
-            <li>the server then validates the data and if a field is invalid</li>
-            <li>the server would send a response back to the client</li>
-            <li>the client then displays the error to the user</li>
-        </ul>
-    </ul>
     <p>
-        The following examples show how to validate forms in the browser before they are
-        submitted to the server. Client-side JS improves the user experience, but the
-        server-side validation (PHP) is still required.
+        These exercises mirror the examples in <code>src/examples/09-js-form-validation</code>.
+        You will add client-side validation to the book forms in your project, while keeping
+        the server-side PHP validation as the final authority.
     </p>
 
-    <ul class="example-list">
-        <li><a href="01-contact.php">Example 09-1: Comment form validation</a></li>
-        <li><a href="02-games-form.php">Example 09-2: Games form validation</a></li>
+    <ul class="exercise-list">
+        <li><a href="#exercise-1">Exercise 09-1: Standalone books form validation</a></li>
+        <li><a href="#exercise-2">Exercise 09-2: Integrate validation into the books project</a></li>
     </ul>
 
-    <h2>Slides</h2>
-    <div class="slides-container">
-        <!-- align button icon with text -->
-        <a class="button-primary" target="_blank" href="https://iadt.sharepoint.com/:f:/s/DL836Y1WebDevelopment_67f7a537-8764-11f0-9114-3f2c36e1fb53/IgD7W6ncrrBJSbzWMBomnEvBAVrVy--Go-kZkyglayk96Lg?e=M7vlhA">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notepad-text-icon lucide-notepad-text">
-                <path d="M8 2v4" />
-                <path d="M12 2v4" />
-                <path d="M16 2v4" />
-                <rect width="16" height="18" x="4" y="4" rx="2" />
-                <path d="M8 10h6" />
-                <path d="M8 14h8" />
-                <path d="M8 18h5" />
-            </svg>
-            <span>0 - JavaScript</span>
-        </a>
+    <h2 id="exercise-1">Exercise 09-1: Standalone books form validation</h2>
+    <p>Create a page in the <code>exercises/09-js-form-validation/</code> folder, for example:</p>
+    <pre><code>exercises/09-js-form-validation/books-form.php</code></pre>
+    <p>On that page, build a form that matches the book create fields from your Books project. Use the same form-handling pattern as the <a href="/examples/09-js-form-validation/01-contact.php">contact example</a> and <a href="/examples/09-js-form-validation/02-games-form.php">games form example</a>.</p>
+    <ul>
+        <li>Build an HTML form for a book with fields:
+            <code>title</code>, <code>author</code>, <code>year</code>, <code>isbn</code>, and <code>description</code>.
+        </li>
+        <li>At the top of the form, add an error summary div (e.g. <code>&lt;div id="error_summary_top" class="error-summary" style="display:none" role="alert"&gt;&lt;/div&gt;</code>) that will list all validation errors.</li>
+        <li>Give each input an <code>id</code> (e.g. <code>id="title"</code>, <code>id="author"</code>). Add an error span under each field with <code>id="fieldname_error"</code> (e.g. <code>&lt;span id="title_error" class="error"&gt;&lt;/span&gt;</code>, <code>id="author_error"</code>, etc.).</li>
+        <li>Give the form an <code>id</code> (e.g. <code>book_form</code>), the submit button <code>id="submit_btn"</code>, and set <code>novalidate</code> on the form.</li>
+        <li>Create <code>books-form.js</code> in the same folder. Follow the example pattern:
+            <ul>
+                <li>Get the form, submit button, <code>error_summary_top</code>, each input, and each error span by <code>getElementById</code>. Only attach the submit listener if the form and button exist (e.g. <code>if (bookForm && submitBtn) { submitBtn.addEventListener('click', onSubmitForm); }</code>).</li>
+                <li>Use a single object to store errors by field (e.g. <code>let errors = {};</code>).</li>
+                <li><code>addError(fieldName, message)</code> — set <code>errors[fieldName] = message</code>.</li>
+                <li><code>showErrorSummaryTop()</code> — if there are errors, build a list from <code>Object.values(errors)</code>, set the summary div’s <code>innerHTML</code>, and show it; otherwise hide and clear it.</li>
+                <li><code>showFieldErrors()</code> — set each error span’s <code>innerHTML</code> from <code>errors.title</code>, <code>errors.author</code>, etc. (or empty string if none).</li>
+                <li>In the submit handler: <code>evt.preventDefault()</code>, reset <code>errors = {}</code>, validate each book field and call <code>addError</code> when invalid, then call <code>showErrorSummaryTop()</code> and <code>showFieldErrors()</code>. If <code>Object.keys(errors).length === 0</code>, call <code>form.submit()</code>.</li>
+                <li>Optional: validation helpers such as <code>validateBookTitle(value)</code>, <code>validateBookAuthor(value)</code>, etc., that return an error string or <code>null</code>; the handler can call them and call <code>addError</code> when the return value is non-null.</li>
+            </ul>
+        </li>
+    </ul>
 
-    </div>
+    <h2 id="exercise-2">Exercise 09-2: Integrate validation into the books project</h2>
+    <p>Apply the same pattern to your real <code>books</code> application:</p>
+    <ul>
+        <li>In <code>book_create.php</code> and <code>book_edit.php</code>:
+            <ul>
+                <li>Add an error summary div at the top of the form (<code>id="error_summary_top"</code>), as in the examples.</li>
+                <li>Ensure each input has a unique <code>name</code> and <code>id</code>.</li>
+                <li>Add an error span under each field with <code>id="fieldname_error"</code> (e.g. <code>id="title_error"</code>).</li><i>or use the same error span used in your server-side validation</i>
+            </ul>
+        </li>
+        <li>In <code>books/js/book-form-validation.js</code>:
+            <ul>
+                <li>Use the same structure as the examples: get form, submit button, error summary div, inputs, and error spans by ID. Use an <code>errors</code> object, <code>addError(fieldName, message)</code>, <code>showErrorSummaryTop()</code>, and <code>showFieldErrors()</code>.</li>
+                <li>Attach the submit handler (e.g. on <code>submit_btn</code> click) only if the form and button exist. In the handler: prevent default, reset errors, validate each field and call <code>addError</code> when invalid, then update the summary and field errors; submit only when there are no errors.</li>
+            </ul>
+        </li>
+        <li>Include <code>book-form-validation.js</code> at the bottom of your create and edit pages.</li>
+    </ul>
+
+    <p>
+        Finally, deliberately submit invalid data to confirm that both the JavaScript
+        and the existing PHP validation behave as you expect.
+    </p>
 </body>
 
 </html>

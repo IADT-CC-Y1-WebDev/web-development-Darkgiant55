@@ -66,75 +66,30 @@ function isMaxLength(value, max) {
 }
 
 function onSubmitForm(evt) {
-    evt.preventDefault();
+    evt.preventDefaault();
 
     errors = {};
 
-    const titleMin = Number(titleInput.dataset.minlength || 3);
-    const titleMax = Number(titleInput.dataset.maxlength || 255);
-    const descMin = Number(descriptionInput.dataset.minlength || 10);
+    let titleMin = titleInput.dataset.minLength;
+    let titleMax = titleInput.dataset.minLength;
 
-    // title
-    if (!isRequired(titleInput.value)) {
-        addError('title', 'Title is required.');
-    } else if (!isMinLength(titleInput.value, titleMin)) {
-        addError(
-            'title',
-            'Title must be at least ' + titleMin + ' characters.'
-        );
-    } else if (!isMaxLength(titleInput.value, titleMax)) {
-        addError('title', 'Title must be at most ' + titleMax + ' characters.');
+    //title
+    if(!isRequired(titleInput.value)){
+        addError('title','Title is required!');
+    } else if (!isMinLength(titleInput.value,titleMin)){
+            addError('title','Title must be at least 3 characters.' + titleMin + );
+    } else if (!isMaxLength(titleInput.value, titleMax)){
+        addError('title','Title must be at most 15 characters.' + titleMax +);
     }
 
-    // release_date
-    if (!isRequired(releaseDateInput.value)) {
-        addError('release_date', 'Release year is required.');
-    } else {
-        const date = new Date(releaseDateInput.value);
-        if (Number.isNaN(date.getTime())) {
-            addError('release_date', 'Please enter a valid date.');
-        }
-    }
+    
 
-    // genre_id
-    if (!isRequired(genreIdInput.value)) {
-        addError('genre_id', 'Genre is required.');
-    }
+   showFieldErrors();
+   showErrorSummaryTop();
 
-    // description
-    if (!isRequired(descriptionInput.value)) {
-        addError('description', 'Description is required.');
-    } else if (!isMinLength(descriptionInput.value, descMin)) {
-        addError(
-            'description',
-            'Description must be at least ' + descMin + ' characters.'
-        );
-    }
-
-    // platform_ids
-    let platformChecked = false;
-    for (let i = 0; i < platformIdsInput.length; i++) {
-        if (platformIdsInput[i].checked) {
-            platformChecked = true;
-            break;
-        }
-    }
-    if (!platformChecked) {
-        addError('platform_ids', 'Select at least one platform.');
-    }
-
-    // image
-    if (!imageInput.files || imageInput.files.length === 0) {
-        addError('image', 'Image is required.');
-    }
-
-    showErrorSummaryTop();
-    showFieldErrors();
-
-    if (Object.keys(errors).length === 0) {
-        alert(
-            'Game form is valid. In a real app, this would submit to the server.'
-        );
-        // gameForm.submit();
-    }
+   if(Object.keys(errors).length === 0){
+    //gameorm.submit();
+    alert('Form data valid.');
+   }
+    
 }
