@@ -1,29 +1,35 @@
 // 08-1: Basic event listeners
 
-const box = document.getElementById('box');
-const toggleBoxBtn = document.getElementById('toggle_box_btn');
-const preview = document.getElementById('preview');
-const previewInput = document.getElementById('preview_input');
+let box = document.getElementById('box');
+let toggleBoxBtn = document.getElementById('toggle_box_btn');
+let preview = document.getElementById('preview');
+let previewInput = document.getElementById('preview_input');
 
-function toggleBoxVisibility(box) {
-    box.classList.toggle('hidden');
-}
-
-function updatePreview(previewElement, text) {
-    const trimmed = text.trim();
-    if (trimmed === '') {
-        previewElement.textContent = '(nothing yet)';
-        previewElement.classList.add('empty');
-    } else {
-        previewElement.textContent = trimmed;
-        previewElement.classList.remove('empty');
-    }
-}
-
-toggleBoxBtn.addEventListener('click', () => {
+toggleBoxBtn .addEventListener("click", (event) => {
     toggleBoxVisibility(box);
 });
 
-previewInput.addEventListener('input', (event) => {
-    updatePreview(preview, event.target.value);
+function toggleBoxVisibility(box2) {
+    box2.classList.toggle('hidden');
+}
+
+previewInput.addEventListener('change', (event) =>{
+
+    console.log(preview,event.target.value);
 });
+
+function updatePreview(previewElement, text) {
+    // console.log(previewElement, text);
+    const trimmed = text.trim();
+
+    if(trimmed === '') {
+    previewElement.textContent = '(nothing yet)';
+    previewElement.classList.add('empty');
+    }
+    else {
+       previewElement.textContent = trimmed;
+       previewElement.classList.remove('empty');
+    }
+
+}
+
