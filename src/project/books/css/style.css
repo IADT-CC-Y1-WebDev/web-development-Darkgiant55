@@ -12,6 +12,10 @@ body {
 	flex-wrap: wrap;
 }
 
+.card.hidden{
+	display:none;
+}
+
 .card {
 	background-color: #f4f4f4;
 	padding: 16px;

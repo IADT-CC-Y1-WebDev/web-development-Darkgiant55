@@ -4,8 +4,9 @@ require_once 'php/lib/utils.php';
  
 try {
     $books = Book::findAll();
-    //$years = Year::findAll();
-    // $publishers = Publisher::findAll();
+    $publishers = Publisher::findAll();
+    $formats = Format::findAll();
+
 }
 catch (PDOException $e) {
     die("<p>PDO Exception: " . $e->getMessage() . "</p>");
@@ -27,22 +28,23 @@ catch (PDOException $e) {
             </div>
             <?php if (!empty($books)) { ?>
                 <div class="width-12 filters">
-                    <form>
-                        <div>
+                    <form id="filters">
+                        <div class="input">
+
                             <label for="title_filter">Title:</label>
                             <input type="text" id="title_filter" name="title_filter">
                         </div>
-                        <div>
-                            <label for="year_filter">Year:</label>
-                            <select id="year_filter" name="year_filter">
-                                <option value="">All Years</option>
-                                <?php foreach ($years as $year) { ?>
-                                    <option value="<?= h($year->id) ?>"><?= h($year->name) ?></option>
+                         <div class="input">
+                            <label for="format_filter">Format:</label>
+                            <select id="format_filter" name="format_filter">
+                                <option value="">All Formats</option>
+                                <?php foreach ($formats as $format) { ?>
+                                    <option value="<?= h($format->id) ?>"><?= h($format->name) ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div>
-                            <label for="publisher_filter">Publisher:</label>
+                        <div class="input">
+                            <label for="publisher_filter">Publishers:</label>
                             <select id="publisher_filter" name="publisher_filter">
                                 <option value="">All Publishers</option>
                                 <?php foreach ($publishers as $publisher) { ?>
@@ -50,6 +52,19 @@ catch (PDOException $e) {
                                 <?php } ?>
                             </select>
                         </div>
+                        <div class="input">
+                            <label class="filter-label" for="sort_by">Sort:</label>
+                            <div>
+                                <select id="sort_by" name="sort_by">
+                                    <option value="title_asc">Title A–Z</option>
+                                    <option value="year_desc">Year (newest first)</option>
+                                    <option value="year_asc">Year (oldest first)</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
                         <div>
                             <button type="button" id="apply_filters">Apply Filters</button>
                             <button type="button" id="clear_filters">Clear Filters</button>
@@ -62,9 +77,21 @@ catch (PDOException $e) {
             <?php if (empty($books)) { ?>
                 <p>No books found.</p>
             <?php } else { ?>
-                <div class="width-12 cards">
-                    <?php foreach ($books as $book) { ?>
-                        <div class="card">
+                <div id="book_cards" class="width-12 cards">
+                    <?php 
+                    foreach ($books as $book) { 
+                        $bookFormats = Format::findByBook($book->id);
+                        $bookFormatIds = [];
+                        foreach ($bookFormats as $f) {
+                            $bookFormatIds[] = $f->id;
+                        }
+                        $bookFormatIdsStr = implode(' ', $bookFormatIds);
+                    ?>
+                        <div class="card" 
+                        data-title="<?= htmlspecialchars($book->title)?>"
+                        data-publisher="<?= htmlspecialchars($book->publisher_id)?>"
+                        data-format="<?= htmlspecialchars($bookFormatIdsStr)?>"
+                        data-year ="<? $book->year?>">
                             <div class="top-content">
                                 <h2>Title: <?= h($book->title) ?></h2>
                                 <p>Author: <?= h($book->author) ?></p>
@@ -83,6 +110,8 @@ catch (PDOException $e) {
                 </div>
             <?php } ?>
         </div>
+        <script src="js/book_filters.js"></script>
+
     </body>
 </html>
  
