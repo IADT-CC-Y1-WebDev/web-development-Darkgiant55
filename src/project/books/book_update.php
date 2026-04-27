@@ -35,10 +35,10 @@ try {
     $rules = [
         'id' => 'required|integer|min:1|max:255',
         'title' => 'required|notempty|min:1|max:255',
-        'auhtor'=> 'required|notempty',
-        'publisher_id'=>'required|nonempty|integer',
+        'author'=> 'required|notempty',
+        'publisher_id'=>'required|notempty|integer',
         'year' => 'required|notempty|integer|minvalue:1900|maxvalue:'. $year,
-        'isbn' => 'required|notempty|integer|min:13|max:13',
+        'isbn' => 'required|notempty|integer|size:13',
         'description' => 'required|notempty|min:10|max:5000',
         'format_ids' => 'required|array|min:1|max:10',
         'image' => 'file|image|mimes:jpg,jpeg,png|max_file_size:5242880' // optional -- no required rule
@@ -92,13 +92,13 @@ try {
     // Update the book instance
     $book->id = $data['id'];
     $book->title = $data['title'];
-    $book->author = $data['auhtor'];
+    $book->author = $data['author'];
     $book->year = $data['year'];
     $book->isbn = $data['isbn'];
     $book->publisher_id = $data['publisher_id'];
     $book->description = $data['description'];
-    if ($cover_filename) {
-        $book->cover_filename = $cover_filename;
+    if ($image_Filename) {
+        $book->cover_filename = $image_Filename;
     }
 
     // Save to database
@@ -126,9 +126,9 @@ try {
 }
 catch (Exception $e) {
     // Error - clean up uploaded image
-    if ($cover_filename) {
-        $uploader->deleteImage($cover_filename);
-    }
+    if (isset($imageFilename) && $imageFilename) {
+    $uploader->deleteImage($imageFilename);
+}
 
     // Set error flash message
     setFlashMessage('error', 'Error: ' . $e->getMessage());
@@ -145,3 +145,4 @@ catch (Exception $e) {
         redirect('book_list.php');
     }
 }
+

@@ -3,7 +3,7 @@ body {
 	font-size: 16px;
 	font-weight: 400;
 	line-height: 1.5em;
-	background-color: #fff;
+	background-image: url(../images/blurred-bookshelf-many-old-books-book-shop-library-1-scaled-1.jpg.webp);
 }
 
 .cards {
@@ -191,6 +191,10 @@ form {
 	width: 108px;
 	display: flex;
 	justify-content: flex-end;
-	color: #252525;
+	color: rgb(255, 255, 255);
 	font-weight: 900;
+}
+
+.input label{
+	color: rgb(0, 0, 0);
 }

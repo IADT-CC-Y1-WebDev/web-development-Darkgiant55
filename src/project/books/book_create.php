@@ -92,7 +92,7 @@ catch (PDOException $e) {
                                     <input type="checkbox"
                                     name="format_ids[]"
                                     value="<?= $format->id ?>"
-                                    <?= chosen('format_id', $format->id) ? "checked" : "" ?>
+                                    <?= chosen('format_ids', $format->id) ? "checked" : "" ?>
                                     >
                                     <?= h($format->name) ?>
                                 </label>
@@ -100,8 +100,8 @@ catch (PDOException $e) {
                         </div>
  
                         <!-- TODO: Display error message if formats validation fails     -->
-                        <?php if (error('format_id')): ?>
-                    <p class="error"><?= error('format_id') ?></p>
+                        <?php if (error('format_ids')): ?>
+                    <p class="error"><?= error('format_ids') ?></p>
                 <?php endif; ?>
  
                     </div>
