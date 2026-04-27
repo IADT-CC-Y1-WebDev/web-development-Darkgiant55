@@ -21,27 +21,20 @@ try {
     $data = [
         'id' => $_POST['id'] ?? null,
         'title' => $_POST['title'] ?? null,
+        'author' => $_POST['author'] ?? null,
         'year' => $_POST['year'] ?? null,
-        'author'=>$_POST['author']??null,
-        'publisher_id'=>$_POST['publisher_id']??null,
-        'isbn'=>$_POST['isbn']??null,
+        'isbn' => $_POST['isbn'] ?? null,
         'description' => $_POST['description'] ?? null,
-        'format_ids' => $_POST['format_ids'] ?? [],
         'image' => $_FILES['image'] ?? null
     ];
-
-    // Define validation rules
-    $year = date("Y");
-    $rules = [
-        'id' => 'required|integer|min:1|max:255',
+    // form rules to ensure datas good n  can be saved
+   $rules = [
+        'id' => 'required|integer',
         'title' => 'required|notempty|min:1|max:255',
-        'author'=> 'required|notempty',
-        'publisher_id'=>'required|notempty|integer',
-        'year' => 'required|notempty|integer|minvalue:1900|maxvalue:'. $year,
-        'isbn' => 'required|notempty|integer|size:13',
-        'description' => 'required|notempty|min:10|max:5000',
-        'format_ids' => 'required|array|min:1|max:10',
-        'image' => 'file|image|mimes:jpg,jpeg,png|max_file_size:5242880' // optional -- no required rule
+        'author' => 'required|notempty',
+        'year' => 'required|notempty|integer|minvalue:1900|maxvalue:2099',
+        'isbn' => 'required|notempty|min:13|max:13',
+        'image' => 'file|image|mimes:jpg,jpeg,png|max_file_size:5242880',
     ];
 
     // Validate all data (including file)
@@ -62,18 +55,7 @@ try {
         throw new Exception('Book not found.');
     }
 
-    // Verify publisher exists
-    $publisher = Publisher::findById($data['publisher_id']);
-    if (!$publisher) {
-        throw new Exception('Selected publisher does not exist.');
-    }
-
-    // Verify formats exist
-    foreach ($data['format_ids'] as $formatId) {
-        if (!Format::findById($formatId)) {
-            throw new Exception('One or more selected formats do not exist.');
-        }
-    }
+   
 
     // Process the uploaded image (validation already completed)
     $imageFilename = null;
@@ -90,28 +72,18 @@ try {
     }
     
     // Update the book instance
-    $book->id = $data['id'];
     $book->title = $data['title'];
     $book->author = $data['author'];
     $book->year = $data['year'];
-    $book->isbn = $data['isbn'];
-    $book->publisher_id = $data['publisher_id'];
     $book->description = $data['description'];
-    if ($image_Filename) {
-        $book->cover_filename = $image_Filename;
+    if ($imageFilename) {
+        $book->cover_filename = $imageFilename;
     }
 
     // Save to database
     $book->save();
 
-    // Delete existing format associations
-    BookFormat::deleteByBook($book->id);
-    // Create new format associations
-    if (!empty($data['format_ids']) && is_array($data['format_ids'])) {
-        foreach ($data['format_ids'] as $formatId) {
-            BookFormat::create($book->id, $formatId);
-        }
-    }
+
 
     // Clear any old form data
     clearFormData();
@@ -126,9 +98,9 @@ try {
 }
 catch (Exception $e) {
     // Error - clean up uploaded image
-    if (isset($imageFilename) && $imageFilename) {
-    $uploader->deleteImage($imageFilename);
-}
+    if ($imageFilename) {
+        $uploader->deleteImage($imageFilename);
+    }
 
     // Set error flash message
     setFlashMessage('error', 'Error: ' . $e->getMessage());
@@ -137,12 +109,11 @@ catch (Exception $e) {
     setFormData($data);
     setFormErrors($errors);
 
-    // Redirect back to edit page if there is an ID; otherwise, go to book_list page
+    // Redirect back to edit page if there is an ID; otherwise, go to index page
     if (isset($data['id']) && $data['id']) {
         redirect('book_edit.php?id=' . $data['id']);
     }
     else {
-        redirect('book_list.php');
+        redirect('index.php');
     }
 }
-

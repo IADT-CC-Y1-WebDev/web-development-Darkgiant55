@@ -198,3 +198,38 @@ form {
 .input label{
 	color: rgb(0, 0, 0);
 }
+
+
+
+.error {
+
+	color: #b00020;
+
+	font-size: 0.85rem;
+
+}
+ 
+.input-error {
+
+	border-color: #b00020;
+
+	background: #fff5f5;
+
+}
+ 
+.error-summary {
+
+	border-radius: 6px;
+
+	border: 1px solid #b00020;
+
+	background: #fff5f5;
+
+	padding: 0.75rem 1rem;
+
+	margin-bottom: 0.75rem;
+
+	max-width: 800px;
+
+}
+ 

@@ -3,8 +3,6 @@ require_once 'php/lib/config.php';
 require_once 'php/lib/session.php';
 require_once 'php/lib/forms.php';
 require_once 'php/lib/utils.php';
-require_once 'php/lib/ImageUpload.php';
-
 
 startSession();
 
@@ -22,25 +20,25 @@ try {
     // Get form data
     $data = [
         'title' => $_POST['title'] ?? null,
-        'author'=> $_POST['author'] ?? null,
+        'author' => $_POST['author'] ?? null,
         'publisher_id' => $_POST['publisher_id'] ?? null,
         'year' => $_POST['year'] ?? null,
         'isbn' => $_POST['isbn'] ?? null,
         'description' => $_POST['description'] ?? null,
         'format_ids' => $_POST['format_ids'] ?? [],
-        'cover' => $_FILES['cover'] ?? null
+        'image' => $_FILES['image'] ?? null
     ];
 
     // Define validation rules
     $rules = [
         'title' => 'required|notempty|min:1|max:255',
-        'author' => 'required|notempty|min:1|max:255',
-        'year' => 'required|notempty',
-        'isbn' => 'required|notempty|size:13',
-        'publisher_id' => 'required|integer',
+        'author' => 'required|notempty',
+        'publisher_id' => 'required|notempty|integer',
+        'year' => 'required|notempty|integer|minvalue:1900|maxvalue:2099',
+        'isbn' => 'required|notempty|min:13|max:13',
         'description' => 'required|notempty|min:10|max:5000',
-        'format_ids' => 'required|array|min:1|max:10',
-        'cover' => 'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880',
+        'format_ids' => 'required|array|min:1|max:4',
+        'image' => 'required|file|image|mimes:jpg,jpeg,png|max_file_size:5242880'
     ];
 
     // Validate all data (including file)
@@ -55,18 +53,12 @@ try {
         throw new Exception('Validation failed.');
     }
 
-    // All validation passed - now process and save
-    // Verify publisher exists
-    $publisher = Publisher::findById($data['publisher_id']);
-    if (!$publisher) {
-        throw new Exception('Selected publisher does not exist.');
-    }
-
+    
     // Process the uploaded image (validation already completed)
     $uploader = new ImageUpload();
-    $cover_filename = $uploader->process($_FILES['cover']);
+    $imageFilename = $uploader->process($_FILES['image']);
 
-    if (!$cover_filename) {
+    if (!$imageFilename) {
         throw new Exception('Failed to process and save the image.');
     }
 
@@ -77,21 +69,12 @@ try {
     $book->publisher_id = $data['publisher_id'];
     $book->year = $data['year'];
     $book->isbn = $data['isbn'];
-    $book->publisher_id = $data['publisher_id'];
     $book->description = $data['description'];
-    $book->cover_filename = $cover_filename;
+    $book->cover_filename = $imageFilename;
 
     // Save to database
     $book->save();
-    // Create format associations
-    if (!empty($data['format_ids']) && is_array($data['format_ids'])) {
-        foreach ($data['format_ids'] as $formatId) {
-            // Verify format exists before creating relationship
-            if (Format::findById($formatId)) {
-                BookFormat::create($book->id, $formatId);
-            }
-        }
-    }
+    
 
     // Clear any old form data
     clearFormData();
@@ -106,8 +89,8 @@ try {
 }
 catch (Exception $e) {
     // Error - clean up uploaded image
-    if ($cover_filename) {
-        $uploader->deleteImage($cover_filename);
+    if (isset($imageFilename) && $imageFilename) {
+        $uploader->deleteImage($imageFilename);
     }
 
     // Set error flash message
